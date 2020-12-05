@@ -2,11 +2,6 @@ package no.quist.aoc20.days
 
 import no.quist.aoc20.Day
 
-/**
- * @author  Håkon Meyer Tørnquist <haakon.t@gmail.com>
- *          Date: 05.12.2020 13.09.
- * @version 1.0
- */
 object Day3 : Day<List<String>, Int>() {
     override fun createInput() = inputLines
 
