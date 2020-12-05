@@ -5,7 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlin.system.measureTimeMillis
 
-abstract class Day<Input, Output : Any>(private val removeBlankLines: Boolean = true) {
+abstract class Day<Input, Output : Any>(private val lineDelimiter: String = System.lineSeparator()) {
     abstract fun createInput(): Input
     abstract fun part1(input: Input): Output
     abstract fun part2(input: Input): Output
@@ -18,12 +18,7 @@ abstract class Day<Input, Output : Any>(private val removeBlankLines: Boolean = 
         try {
             javaClass.getResource("/$className.txt")
                 .readText()
-                .split("\r\n")
-                .run {
-                    if (removeBlankLines) {
-                        filter { it.isNotBlank() }
-                    } else this
-                }
+                .split(lineDelimiter)
         } catch (ex: Exception) {
             println("Missing $className.txt in resources folder")
             emptyList()
