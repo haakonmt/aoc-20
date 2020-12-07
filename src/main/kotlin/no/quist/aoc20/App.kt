@@ -6,7 +6,7 @@ import kotlinx.coroutines.runBlocking
 import no.quist.aoc20.days.*
 import java.time.LocalDate
 
-val days = listOf(Day1, Day2, Day3, Day4, Day5, Day6)
+val days = listOf(Day1, Day2, Day3, Day4, Day5, Day6, Day7)
 
 fun main() {
     runCurrentDay()
