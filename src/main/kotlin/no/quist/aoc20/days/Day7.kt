@@ -9,33 +9,36 @@ object Day7 : Day<Map<String, Map<String, Int>>, Int>() {
             key to when (value) {
                 "no other bags" -> emptyMap()
                 else -> value.split(",").associate { part ->
-                    val (_, v, k) = Regex("(\\d) (.*) bags?").find(part)!!.groupValues
-                    k to v.toInt()
+                    Regex("(\\d) (.*) bags?").find(part)!!.groupValues.let { (_, v, k) ->
+                        k to v.toInt()
+                    }
                 }
             }
         }
     }.toMap()
 
-    override fun part1(input: Map<String, Map<String, Int>>) =
-            part1(input, "shiny gold", mutableSetOf()).size
-
-    private fun part1(rules: Map<String, Map<String, Int>>, color: String, colors: MutableSet<String>): Set<String> {
-        val parents = rules.filter { it.value.containsKey(color) }.keys
-        while (colors.addAll(parents)) {
-            colors.addAll(parents.flatMap {
-                part1(rules, it, colors)
-            })
+    override fun part1(input: Map<String, Map<String, Int>>): Int {
+        fun part1(color: String, colors: MutableSet<String>): Set<String> {
+            val parents = input.filter { it.value.containsKey(color) }.keys
+            while (colors.addAll(parents)) {
+                colors.addAll(parents.flatMap {
+                    part1(it, colors)
+                })
+            }
+            return colors
         }
-        return colors
+
+        return part1("shiny gold", mutableSetOf()).size
     }
 
-    private fun part2(rules: Map<String, Map<String, Int>>, color: String): Int {
-        val it = rules[color]!!
-        return it.values.sum() + it.map {
-            it.value * part2(rules, it.key)
-        }.sum()
-    }
+    override fun part2(input: Map<String, Map<String, Int>>): Int {
+        fun part2(color: String): Int {
+            val it = input[color]!!
+            return it.values.sum() + it.map {
+                it.value * part2(it.key)
+            }.sum()
+        }
 
-    override fun part2(input: Map<String, Map<String, Int>>) =
-            part2(input, "shiny gold")
+        return part2("shiny gold")
+    }
 }
